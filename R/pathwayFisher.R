@@ -38,7 +38,7 @@ pathwayFisher <- function(significant,whole,fdr=1.1,database=NULL,pathSizeMin=15
 
   path_pval <- sapply(genesets_pro,function(x) fisher.test(prepareFisherTable(x,significant,whole),alternative="greater")$p.value)
   path_qval <- p.adjust(path_pval, method = "BH")
-  sigIndex = order(path_pval)
+  sortIndex = order(path_pval)
   gene_set <- names(genesets_pro)
 
   Pathway = gene_set
@@ -48,7 +48,15 @@ pathwayFisher <- function(significant,whole,fdr=1.1,database=NULL,pathSizeMin=15
   NumOfGenesInPath = sapply(genesets_pro,length)
   NumOfDEGenesInPath = sapply(genesets_pro,function(x) length(intersect(x,significant)))
   res = data.frame(Pathway,Path_pval,Path_qval,TotalNumOfDEGenes,NumOfGenesInPath,NumOfDEGenesInPath)
-  resOrder <- res[sigIndex,]
-  return (resOrder[resOrder$Path_qval<fdr, ])
+  
+  resOrder <- res[sortIndex,]
+  
+  sigIndex <- resOrder$Path_qval<=fdr
+  
+  if(sum(sigIndex)>0){
+	  return(resOrder[resOrder$Path_qval<fdr, ])  	
+  } else {
+	  return(0)
+  }
 }
 
