@@ -22,6 +22,11 @@ pathwayFisher <- function(significant,whole,fdr=1.1,database=NULL,pathSizeMin=15
   if(is.null(database)){
     return ("Please specify database=Mm.gmtl.c2 or database=Mm.gmtl.c5")
   }
+  
+  significant <- to.upper(significant)
+  whole <- to.upper(whole)
+  database <- lapply(database,function(x) to.upper(x))
+
   ######################Update the gene sets by dropping genes that do not appear in whole
   gene.overlap2=lapply(database,function(x) intersect(x,whole))
   gene.overlap=levels(factor(unlist(gene.overlap2)))
@@ -35,7 +40,7 @@ pathwayFisher <- function(significant,whole,fdr=1.1,database=NULL,pathSizeMin=15
   path_qval <- p.adjust(path_pval, method = "BH")
   sigIndex = order(path_pval)
   gene_set <- names(genesets_pro)
-  print(length(gene_set))
+
   Pathway = gene_set
   Path_pval = path_pval
   Path_qval = path_qval
@@ -43,6 +48,7 @@ pathwayFisher <- function(significant,whole,fdr=1.1,database=NULL,pathSizeMin=15
   NumOfGenesInPath = sapply(genesets_pro,length)
   NumOfDEGenesInPath = sapply(genesets_pro,function(x) length(intersect(x,significant)))
   res = data.frame(Pathway,Path_pval,Path_qval,TotalNumOfDEGenes,NumOfGenesInPath,NumOfDEGenesInPath)
-  return (res[sigIndex,])
+  resOrder <- res[sigIndex,]
+  return (resOrder[resOrder$Path_qval<fdr, ])
 }
 
