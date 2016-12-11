@@ -23,9 +23,9 @@ pathwayFisher <- function(significant,whole,fdr=1.1,database=NULL,pathSizeMin=15
     return ("Please specify database=Mm.gmtl.c2 or database=Mm.gmtl.c5")
   }
   
-  significant <- to.upper(significant)
-  whole <- to.upper(whole)
-  database <- lapply(database,function(x) to.upper(x))
+  significant <- toupper(significant)
+  whole <- toupper(whole)
+  database <- lapply(database,function(x) toupper(x))
 
   ######################Update the gene sets by dropping genes that do not appear in whole
   gene.overlap2=lapply(database,function(x) intersect(x,whole))
