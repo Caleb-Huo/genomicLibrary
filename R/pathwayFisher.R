@@ -47,7 +47,8 @@ pathwayFisher <- function(significant,whole,fdr=1.1,database=NULL,pathSizeMin=15
   TotalNumOfDEGenes = length(significant)
   NumOfGenesInPath = sapply(genesets_pro,length)
   NumOfDEGenesInPath = sapply(genesets_pro,function(x) length(intersect(x,significant)))
-  res = data.frame(Pathway,Path_pval,Path_qval,TotalNumOfDEGenes,NumOfGenesInPath,NumOfDEGenesInPath)
+  DEGenesInPath = sapply(genesets_pro,function(x) paste(intersect(x,significant),collapse='/'))
+  res = data.frame(Pathway,Path_pval,Path_qval,TotalNumOfDEGenes,NumOfGenesInPath,NumOfDEGenesInPath,DEGenesInPath)
   
   resOrder <- res[sortIndex,]
   
