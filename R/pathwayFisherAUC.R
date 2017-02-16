@@ -13,7 +13,7 @@
 ##' whole <- letters
 ##' significant <- letters[1:5]
 ##' whole0 <- runif(length(whole),0.05,1)
-##' whole0[1:length(significant)] <- runif(length(whole),0,0.05)
+##' whole0[1:length(significant)] <- runif(length(significant),0,0.05)
 ##' names(whole0) <- whole
 ##' database <- list(d1=letters[2:20],d2=letters[5:26])
 ##' pathwayFisher(significant, whole0, database=database)
@@ -40,7 +40,7 @@ pathwayFisherAUC <- function(significant,whole0,fdr=1.1,database=NULL,pathSizeMi
   genesets_pro <- genesets[index]
   names(genesets_pro) <-names(genesets)[index]
 
-  auc <- sapply(genesets_pro, function(x) roc(whole %in% x, whole0)$auc)
+  auc <- sapply(genesets_pro, function(x) roc(whole %in% x, 1 - whole0, direction='<')$auc)
 
   path_pval <- sapply(genesets_pro,function(x) fisher.test(prepareFisherTable(x,significant,whole),alternative="greater")$p.value)
   path_qval <- p.adjust(path_pval, method = "BH")
