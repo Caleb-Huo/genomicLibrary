@@ -16,7 +16,7 @@
 ##' whole0[1:length(significant)] <- runif(length(significant),0,0.05)
 ##' names(whole0) <- whole
 ##' database <- list(d1=letters[2:20],d2=letters[5:26])
-##' pathwayFisher(significant, whole0, database=database)
+##' pathwayFisherAUC(significant, whole0, database=database)
 ##'
 pathwayFisherAUC <- function(significant,whole0,fdr=1.1,database=NULL,pathSizeMin=15,pathSizeMax=200){
   ####significant: just genenames
