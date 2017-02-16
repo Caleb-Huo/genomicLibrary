@@ -29,7 +29,7 @@ pathway enrichment analysis using Fisher exaxt test
 whole <- letters
 significant <- letters[1:5]
 whole0 <- runif(length(whole),0.05,1)
-whole0[1:length(significant)] <- runif(length(whole),0,0.05)
+whole0[1:length(significant)] <- runif(length(significant),0,0.05)
 names(whole0) <- whole
 database <- list(d1=letters[2:20],d2=letters[5:26])
 pathwayFisher(significant, whole0, database=database)
