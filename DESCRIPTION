@@ -5,7 +5,7 @@ Version: 1.0
 Date: 2016-12-11
 Author: Zhiguang Huo
 Maintainer: Zhiguang Huo <xiaoguang1988@gmail.com>
-Depends: utils, R(>= 2.14.1)
+Depends: utils, pROC, R(>= 2.14.1)
 Description: Put commonly used genomic R functions here
 License: GPL-3.0
 RoxygenNote: 5.0.1
