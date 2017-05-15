@@ -3,5 +3,6 @@
 export(fisher)
 export(maxP)
 export(minP)
+export(getWsHeatmap)
 export(pathwayFisher)
 export(roP)
