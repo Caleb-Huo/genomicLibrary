@@ -1,10 +1,8 @@
 ##' @export
 probeAnnotation <- function(probes, platformSYMBOL){
 	x <- platformSYMBOL
-	# Get the probe identifiers that are mapped to a gene symbol
-	mapped_probes <- mappedkeys(x)
 	# Convert to a list
-	xx <- as.list(x[mapped_probes])
+	xx <- as.list(x)
 	
 	matchProbeIndex = match(probes,names(xx))
 	naive <- function(x){
