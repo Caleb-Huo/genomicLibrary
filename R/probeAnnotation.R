@@ -2,7 +2,7 @@
 probeAnnotation <- function(probes, platformSYMBOL){
 	x <- platformSYMBOL
 	# Convert to a list
-	xx <- as.list(x)
+	xx <- base::as.list(x)
 	
 	matchProbeIndex = match(probes,names(xx))
 	naive <- function(x){
