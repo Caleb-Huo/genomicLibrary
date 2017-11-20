@@ -8,6 +8,6 @@ Maintainer: Zhiguang Huo <xiaoguang1988@gmail.com>
 Depends: utils, R(>= 2.14.1)
 Description: Put commonly used genomic R functions here
 License: GPL-3.0
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 NeedsCompilation: no
 Packaged: 2016-12-11 16:26:22 UTC; 
