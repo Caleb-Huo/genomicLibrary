@@ -3,6 +3,7 @@
 export(IQRprocedure)
 export(fisher)
 export(getWsHeatmap)
+export(manhattan)
 export(maxP)
 export(minP)
 export(pathwayFisher)
