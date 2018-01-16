@@ -79,13 +79,13 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
     plot=plot+ theme_bw() +
     theme(
       legend.position = "none",
-      title=title,
       #panel.background=theme_blank(), 
       #panel.grid.minor=theme_blank(),
       axis.text.x=element_text(size=size.x.labels, colour="grey50"), 
       axis.text.y=element_text(size=size.y.labels, colour="grey50"), 
       #axis.ticks=theme_segment(colour=NA)
-    )
+    ) +
+	labs(title = title)
     
     if (suggestiveline) plot=plot+geom_hline(yintercept=suggestiveline,colour="blue", alpha=I(1/3))
     if (genomewideline) plot=plot+geom_hline(yintercept=genomewideline,colour="red")
