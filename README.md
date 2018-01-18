@@ -1,5 +1,5 @@
 # genomicLibrary
-commonly use R function in genomic studies
+Commonly use R function in genomic studies
 
 
 ## Required Package
