@@ -56,7 +56,8 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
     }
     
     mycols=rep(c("gray10","gray60"),max(d$CHR))
-    
+    mycols=rainbow(max(d$CHR))
+	
     if (max.y=="max") maxy=ceiling(max(d$logp)) else maxy=max.y
     if (maxy<8) maxy=8
     
@@ -71,8 +72,8 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
       plot=plot+scale_colour_manual(values=mycols)
     }
     
-    if (annotate) 	plot=plot + geom_point(data=d.annotate, colour=I("green3")) + 
-      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, colour=I("green3"))
+    if (annotate) 	plot=plot + geom_point(data=d.annotate, colour=I("black")) + 
+      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, colour=I("black"))
     
     #plot=plot + theme() 
     #plot=plot + theme(title=title)
@@ -88,7 +89,7 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
 	labs(title = title)
     
     if (suggestiveline) plot=plot+geom_hline(yintercept=suggestiveline,colour="blue", alpha=I(1/3))
-    if (genomewideline) plot=plot+geom_hline(yintercept=genomewideline,colour="red")
+    if (genomewideline) plot=plot+geom_hline(yintercept=genomewideline,colour="grey50")
     
     plot
     
