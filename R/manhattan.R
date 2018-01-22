@@ -74,7 +74,7 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
       plot=plot+scale_colour_manual(values=mycols)
     }
     
-    if (annotate) 	plot=plot + geom_point(data=d.annotate, colour=I("grey50")) + 
+    if (annotate) 	plot=plot + # geom_point(data=d.annotate, colour=I("grey50")) + 
       geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, colour=I("grey50"))
     
     #plot=plot + theme() 
