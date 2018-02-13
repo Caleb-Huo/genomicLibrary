@@ -86,6 +86,8 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
       #panel.grid.minor=theme_blank(),
       axis.text.x=element_text(size=size.x.labels, colour="grey50"), 
       axis.text.y=element_text(size=size.y.labels, colour="grey50"), 
+      axis.title.x=element_text(size=size.x.labels, colour="grey50"), 
+      axis.title.y=element_text(size=size.y.labels, colour="grey50"), 
       #axis.ticks=theme_segment(colour=NA)
     ) +
 	labs(title = title)
