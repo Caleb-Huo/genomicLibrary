@@ -63,19 +63,20 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
     if (max.y=="max") maxy=ceiling(max(d$logp)) else maxy=max.y
     if (maxy<8) maxy=8
     
-    if (annotate) d.annotate=d[d$SNP %in% SNPlist, ]
+    if (annotate) d.annotate=d[d$SNP %in% SNPlist & d$logp > 7, ]
     
     if (numchroms==1) {
       plot=qplot(pos,logp,data=d,ylab=expression(-log[10](italic(p))), xlab=paste("Chromosome",unique(d$CHR),"position"))
     }	else {
-      plot=qplot(pos,logp,data=d, ylab=expression(-log[10](italic(p))) , colour=factor(CHR))
+		maxLogp <- max(d$logp, na.rm=T)
+      plot=qplot(pos,logp,data=d, ylab=expression(-log[10](italic(p))) , size = 1 + (logp * 1/maxLogp), colour=factor(CHR))
       plot=plot+scale_x_continuous(name="Chromosome", breaks=ticks, labels=(unique(d$CHR)))
       plot=plot+scale_y_continuous(limits=c(0,maxy), breaks=1:maxy, labels=1:maxy)
       plot=plot+scale_colour_manual(values=mycols)
     }
     
     if (annotate) 	plot=plot + # geom_point(data=d.annotate, colour=I("grey50")) + 
-      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, colour=I("grey50"))
+      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, size = 8 + 1*(d.annotate$logp * 1/maxLogp), colour=I("grey50"))
     
     #plot=plot + theme() 
     #plot=plot + theme(title=title)

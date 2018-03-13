@@ -39,4 +39,7 @@ vignettes/*.pdf
 *.so
 *.o
 *.rds
- 
+
+## mac files
+.DS_Store 
+
