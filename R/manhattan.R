@@ -75,8 +75,8 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
       plot=plot+scale_colour_manual(values=mycols)
     }
     
-    if (annotate) 	plot=plot + # geom_point(data=d.annotate, colour=I("grey50")) + 
-      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, size = 8 + 1*(d.annotate$logp * 1/maxLogp), colour=I("grey50"))
+    if (annotate) 	plot=plot + # geom_point(data=d.annotate, colour=I("black")) + 
+      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, size = 8 + 1*(d.annotate$logp * 1/maxLogp), colour=I("black"))
     
     #plot=plot + theme() 
     #plot=plot + theme(title=title)
@@ -85,16 +85,16 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
       legend.position = "none",
       #panel.background=theme_blank(), 
       #panel.grid.minor=theme_blank(),
-      axis.text.x=element_text(size=size.x.labels, colour="grey50"), 
-      axis.text.y=element_text(size=size.y.labels, colour="grey50"), 
-      axis.title.x=element_text(size=size.x.labels, colour="grey50"), 
-      axis.title.y=element_text(size=size.y.labels, colour="grey50"), 
+      axis.text.x=element_text(size=size.x.labels, colour="black"), 
+      axis.text.y=element_text(size=size.y.labels, colour="black"), 
+      axis.title.x=element_text(size=size.x.labels, colour="black"), 
+      axis.title.y=element_text(size=size.y.labels, colour="black"), 
       #axis.ticks=theme_segment(colour=NA)
     ) +
 	labs(title = title)
     
-    if (suggestiveline) plot=plot+geom_hline(yintercept=suggestiveline,colour="blue", alpha=I(1/3))
-    if (genomewideline) plot=plot+geom_hline(yintercept=genomewideline,colour="grey50")
+    if (suggestiveline) plot=plot+geom_hline(yintercept=suggestiveline,colour="black", linetype="dashed")
+    if (genomewideline) plot=plot+geom_hline(yintercept=genomewideline,colour="black")
     
     plot
     
