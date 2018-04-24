@@ -69,7 +69,7 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
       plot=qplot(pos,logp,data=d,ylab=expression(-log[10](italic(p))), xlab=paste("Chromosome",unique(d$CHR),"position"))
     }	else {
 		maxLogp <- max(d$logp, na.rm=T)
-      plot=qplot(pos,logp,data=d, ylab=expression(-log[10](italic(p))) , size = 1 + (logp * 1/maxLogp), colour=factor(CHR))
+      plot=qplot(pos,logp,data=d, ylab=expression(-log[10](italic(p))) , colour=factor(CHR))
       plot=plot+scale_x_continuous(name="Chromosome", breaks=ticks, labels=(unique(d$CHR)))
       plot=plot+scale_y_continuous(limits=c(0,maxy), breaks=1:maxy, labels=1:maxy)
       plot=plot+scale_colour_manual(values=mycols)
@@ -85,10 +85,10 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
       legend.position = "none",
       #panel.background=theme_blank(), 
       #panel.grid.minor=theme_blank(),
-      axis.text.x=element_text(size=size.x.labels, colour="black"), 
-      axis.text.y=element_text(size=size.y.labels, colour="black"), 
-      axis.title.x=element_text(size=size.x.labels, colour="black"), 
-      axis.title.y=element_text(size=size.y.labels, colour="black"), 
+      axis.text.x=element_text(size=15, colour="black"), 
+      axis.text.y=element_text(size=15, colour="black"), 
+      axis.title.x=element_text(size=20, colour="black"), 
+      axis.title.y=element_text(size=20, colour="black"), 
       #axis.ticks=theme_segment(colour=NA)
     ) +
 	labs(title = title)
