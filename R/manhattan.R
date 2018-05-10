@@ -62,7 +62,7 @@ manhattan <- function(dataframe, maxy=NULL, suggestiveline=0, genomewideline=-lo
 	geom_point() +
 	scale_x_continuous(name="Chromosome", breaks=ticks, labels=(unique(d$CHR))) +
 	scale_y_continuous(limits=c(0,maxy), breaks=0:maxy, labels=0:maxy) + 
-	scale_colour_manual(values=mycols) + 
+	scale_colour_manual(values=mycols0) + 
 	coord_cartesian(xlim = c(min(d$pos), max(d$pos)), ylim = c(0, maxy*1.05), expand = FALSE) + 
 	labs(x = "Chromosome", y = expression(-log[10](italic(p)))) + 
 	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
