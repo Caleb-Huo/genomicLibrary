@@ -23,9 +23,11 @@
 manhattan <- function(dataframe, maxy=NULL, suggestiveline=0, genomewideline=-log10(5e-8), axisSize = 20, labelSize = 5, annotate=F, SNPlogic=NULL){
     
 	if (annotate & is.null(SNPlogic)) stop("You requested annotation but provided no SNPlist!")
+	
+	d=dataframe
+	
 	stopifnot("CHR" %in% names(d) & "BP" %in% names(d) & "P" %in% names(d) )
 	
-    d=dataframe
     d=d[d$CHR %in% 1:23, ]
     d$logp = -log10(d$P)
 	
