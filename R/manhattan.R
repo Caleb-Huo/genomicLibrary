@@ -16,10 +16,11 @@
 ##' @examples
 ##' gwasResults <- data.frame(SNP=paste0("rs",1:40), CHR=1, BP = 1:40, P=runif(40))
 ##' manhattan(gwasResults)
+##' manhattan(gwasResults, annotate=T, SNPlogic=c(rep(T,3),rep(F,37)))
 ##'
-manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genomewideline=-log10(5e-8), size.x.labels=9, size.y.labels=10, annotate=F, SNPlist=NULL) {
+manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genomewideline=-log10(5e-8), size.x.labels=9, size.y.labels=10, labelSize = 7, annotate=F, SNPlogic=NULL) {
   
-  if (annotate & is.null(SNPlist)) stop("You requested annotation but provided no SNPlist!")
+  if (annotate & is.null(SNPlogic)) stop("You requested annotation but provided no SNPlist!")
   
   d=dataframe
   
@@ -63,7 +64,7 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
     if (max.y=="max") maxy=ceiling(max(d$logp)) else maxy=max.y
     if (maxy<8) maxy=8
     
-    if (annotate) d.annotate=d[d$SNP %in% SNPlist & d$logp > 7, ]
+    if (annotate) d.annotate=d[SNPlogic, ]
     
     if (numchroms==1) {
       plot=qplot(pos,logp,data=d,ylab=expression(-log[10](italic(p))), xlab=paste("Chromosome",unique(d$CHR),"position"))
@@ -76,7 +77,7 @@ manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genom
     }
     
     if (annotate) 	plot=plot + # geom_point(data=d.annotate, colour=I("black")) + 
-      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, size = 8 + 1*(d.annotate$logp * 1/maxLogp), colour=I("black"))
+      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = T, size = labelSize, colour=I("black"))
     
     #plot=plot + theme() 
     #plot=plot + theme(title=title)
