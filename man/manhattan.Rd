@@ -4,39 +4,41 @@
 \alias{manhattan}
 \title{manhattan plot}
 \usage{
-manhattan(dataframe, title = NULL, max.y = "max", suggestiveline = 0,
-  genomewideline = -log10(5e-08), size.x.labels = 9, size.y.labels = 10,
-  annotate = F, SNPlist = NULL)
+manhattan(dataframe, maxy = NULL, suggestiveline = 0,
+  genomewideline = -log10(5e-08), axisSize = 20, labelSize = 5,
+  annotate = F, SNPlogic = NULL)
 }
 \arguments{
 \item{dataframe, }{same as qqman package, 4 columns including SNP, CHR, BP and P}
 
-\item{title}{title}
-
-\item{max.y}{max}
+\item{maxy}{maximum of y axis}
 
 \item{suggestiveline}{0}
-}
-\value{
-genomewideline default -log10(5e-8)
 
-size.x.labels default 9
+\item{genomewideline}{default -log10(5e-8)}
 
-size.y.labels default 10
+\item{axisSize}{default 20}
 
-annotate F
+\item{labelSize}{default 5}
 
-SNPlist NULL
+\item{annotate}{F}
+
+\item{SNPlogic}{which SNP need to be annotated in the plot}
+
+\item{title}{title}
 }
 \description{
 manhattan plot
 }
 \details{
-manhattan plot
+manhattan plot. Input a dataframe including CHR, BP, P, SNP
 }
 \examples{
-gwasResults <- data.frame(SNP=paste0("rs",1:40), CHR=1, BP = 1:40, P=runif(40))
+gwasResults1 <- data.frame(SNP=paste0("rs1",1:40), CHR=1, BP = 1:400, P=runif(400))
+gwasResults2 <- data.frame(SNP=paste0("rs2",1:40), CHR=2, BP = 1:600, P=runif(600))
+gwasResults <- rbind(gwasResults1, gwasResults2)
 manhattan(gwasResults)
+manhattan(gwasResults, annotate=T, SNPlogic=c(100,200,300,310))
 
 }
 \author{

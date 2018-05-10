@@ -1,106 +1,82 @@
 ##' manhattan plot
 ##'
-##' manhattan plot
+##' manhattan plot. Input a dataframe including CHR, BP, P, SNP
 ##' @title manhattan plot
 ##' @param dataframe, same as qqman package, 4 columns including SNP, CHR, BP and P
 ##' @param title title
-##' @param max.y max
+##' @param maxy maximum of y axis
 ##' @param suggestiveline 0
-##' @return genomewideline default -log10(5e-8)
-##' @return size.x.labels default 9
-##' @return size.y.labels default 10
-##' @return annotate F
-##' @return SNPlist NULL
+##' @param genomewideline default -log10(5e-8)
+##' @param axisSize default 20
+##' @param labelSize default 5
+##' @param annotate F
+##' @param SNPlogic which SNP need to be annotated in the plot
 ##' @author Caleb
 ##' @export
 ##' @examples
-##' gwasResults <- data.frame(SNP=paste0("rs",1:40), CHR=1, BP = 1:40, P=runif(40))
+##' gwasResults1 <- data.frame(SNP=paste0("rs1",1:40), CHR=1, BP = 1:400, P=runif(400))
+##' gwasResults2 <- data.frame(SNP=paste0("rs2",1:40), CHR=2, BP = 1:600, P=runif(600))
+##' gwasResults <- rbind(gwasResults1, gwasResults2)
 ##' manhattan(gwasResults)
-##' manhattan(gwasResults, annotate=T, SNPlogic=c(rep(T,3),rep(F,37)))
+##' manhattan(gwasResults, annotate=T, SNPlogic=c(100,200,300,310))
 ##'
-manhattan = function(dataframe, title=NULL, max.y="max", suggestiveline=0, genomewideline=-log10(5e-8), size.x.labels=9, size.y.labels=10, labelSize = 7, annotate=F, SNPlogic=NULL) {
-  
-  if (annotate & is.null(SNPlogic)) stop("You requested annotation but provided no SNPlist!")
-  
-  d=dataframe
-  
-  #limit to only chrs 1-23?
-  d=d[d$CHR %in% 1:23, ]
-  
-  if ("CHR" %in% names(d) & "BP" %in% names(d) & "P" %in% names(d) ) {
+manhattan <- function(dataframe, maxy=NULL, suggestiveline=0, genomewideline=-log10(5e-8), axisSize = 20, labelSize = 5, annotate=F, SNPlogic=NULL){
     
-    d=na.omit(d)
-    d=d[d$P>0 & d$P<=1, ]
+	if (annotate & is.null(SNPlogic)) stop("You requested annotation but provided no SNPlist!")
+	stopifnot("CHR" %in% names(d) & "BP" %in% names(d) & "P" %in% names(d) )
+	
+    d=dataframe
+    d=d[d$CHR %in% 1:23, ]
     d$logp = -log10(d$P)
-    
+	
     d$pos=NA
     ticks=NULL
     lastbase=0
-    
-    #new 2010-05-10
-    numchroms=length(unique(d$CHR))
-    if (numchroms==1) {
-      d$pos=d$BP
-    } else {
-      
-      for (i in unique(d$CHR)) {
-        if (i==1) {
-          d[d$CHR==i, ]$pos=d[d$CHR==i, ]$BP
-        }	else {
-          lastbase=lastbase+tail(subset(d,CHR==i-1)$BP, 1)
-          d[d$CHR==i, ]$pos=d[d$CHR==i, ]$BP+lastbase
-        }
-        ticks=c(ticks, d[d$CHR==i, ]$pos[floor(length(d[d$CHR==i, ]$pos)/2)+1])
-      }
-      ticklim=c(min(d$pos),max(d$pos))
-      
-    }
-    
-    mycols=rep(c("gray10","gray60"),max(d$CHR))
-    mycols=rainbow(max(d$CHR))
-	set.seed(32608)
-	mycols <- sample(mycols)
 	
-    if (max.y=="max") maxy=ceiling(max(d$logp)) else maxy=max.y
-    if (maxy<8) maxy=8
-    
-    if (annotate) d.annotate=d[SNPlogic, ]
-    
-    if (numchroms==1) {
-      plot=qplot(pos,logp,data=d,ylab=expression(-log[10](italic(p))), xlab=paste("Chromosome",unique(d$CHR),"position"))
-    }	else {
-		maxLogp <- max(d$logp, na.rm=T)
-      plot=qplot(pos,logp,data=d, ylab=expression(-log[10](italic(p))) , colour=factor(CHR))
-      plot=plot+scale_x_continuous(name="Chromosome", breaks=ticks, labels=(unique(d$CHR)))
-      plot=plot+scale_y_continuous(limits=c(0,maxy), breaks=1:maxy, labels=1:maxy)
-      plot=plot+scale_colour_manual(values=mycols)
+    numchroms=length(unique(d$CHR))
+    for (i in unique(d$CHR)) {
+      if (i==1) {
+        d[d$CHR==i, ]$pos=d[d$CHR==i, ]$BP
+      }	else {
+        lastbase=lastbase+tail(subset(d,CHR==i-1)$BP, 1)
+        d[d$CHR==i, ]$pos=d[d$CHR==i, ]$BP+lastbase
+      }
+      ticks=c(ticks, d[d$CHR==i, ]$pos[floor(length(d[d$CHR==i, ]$pos)/2)+1])
     }
-    
-    if (annotate) 	plot=plot + # geom_point(data=d.annotate, colour=I("black")) + 
-      geom_text(data=d.annotate, label=d.annotate$SNP, nudge_x = 0.25, nudge_y = 0.25, check_overlap = F, size = labelSize, colour=I("black"))
-    
-    #plot=plot + theme() 
-    #plot=plot + theme(title=title)
-    plot=plot+ theme_bw() +
-    theme(
-      legend.position = "none",
-      #panel.background=theme_blank(), 
-      #panel.grid.minor=theme_blank(),
-      axis.text.x=element_text(size=15, colour="black"), 
-      axis.text.y=element_text(size=15, colour="black"), 
-      axis.title.x=element_text(size=20, colour="black"), 
-      axis.title.y=element_text(size=20, colour="black"), 
-      #axis.ticks=theme_segment(colour=NA)
-    ) +
-	labs(title = title)
-    
+    ticklim=c(min(d$pos),max(d$pos))
+ 
+ 	ncolor <- 6
+	mycols0 <- palette()[1:ncolor]
+	mycols0[1] <- "grey"
+    d$color <- with(d, mycols0[CHR%%ncolor + 1])
+	
+	if(is.null(maxy)){
+		maxy <- max(d$logp)
+	}
+	
+	
+	## visualize the manhattan plot
+	plot <- ggplot(data=d,aes(x=pos,y=logp,col=color)) + 
+	geom_point() +
+	scale_x_continuous(name="Chromosome", breaks=ticks, labels=(unique(d$CHR))) +
+	scale_y_continuous(limits=c(0,maxy), breaks=0:maxy, labels=0:maxy) + 
+	scale_colour_manual(values=mycols) + 
+	coord_cartesian(xlim = c(min(d$pos), max(d$pos)), ylim = c(0, maxy*1.05), expand = FALSE) + 
+	labs(x = "Chromosome", y = expression(-log[10](italic(p)))) + 
+	theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
+	panel.background = element_blank(), axis.line = element_line(colour = "black"))+ 
+	theme(text = element_text(size=axisSize), legend.position="none") 
     if (suggestiveline) plot=plot+geom_hline(yintercept=suggestiveline,colour="black", linetype="dashed")
     if (genomewideline) plot=plot+geom_hline(yintercept=genomewideline,colour="black")
-    
-    plot
-    
-  }	else {
-    stop("Make sure your data frame contains columns CHR, BP, and P")
-  }
+		
+	if (annotate){
+		d.annotate=d[SNPlogic, ]
+		plot <- plot + geom_text_repel(data=d.annotate, aes(x=pos,y=logp,label=SNP), size=labelSize,colour=I("black"))
+	} 
+	
+	plot
+	
+
 }
+
 
