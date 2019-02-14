@@ -20,7 +20,7 @@
 ##' manhattan(gwasResults)
 ##' manhattan(gwasResults, annotate=T, SNPlogic=c(100,200,300,310))
 ##'
-manhattan <- function(dataframe, maxy=NULL, suggestiveline=0, genomewideline=-log10(5e-8), axisSize = 20, labelSize = 5, annotate=F, SNPlogic=NULL){
+manhattan <- function(dataframe, maxy=NULL, oneColor = "red", suggestiveline=0, genomewideline=-log10(5e-8), axisSize = 20, labelSize = 5, annotate=F, SNPlogic=NULL){
     
 	if (annotate & is.null(SNPlogic)) stop("You requested annotation but provided no SNPlist!")
 	
@@ -35,9 +35,11 @@ manhattan <- function(dataframe, maxy=NULL, suggestiveline=0, genomewideline=-lo
     ticks=NULL
     lastbase=0
 	
+	sortedCHR <- sort(unique(d$CHR))
+	
     numchroms=length(unique(d$CHR))
-    for (i in unique(d$CHR)) {
-      if (i==1) {
+    for (i in sortedCHR) {
+      if (i==sortedCHR[1]) {
         d[d$CHR==i, ]$pos=d[d$CHR==i, ]$BP
       }	else {
         lastbase=lastbase+tail(subset(d,CHR==i-1)$BP, 1)
@@ -51,6 +53,10 @@ manhattan <- function(dataframe, maxy=NULL, suggestiveline=0, genomewideline=-lo
 	mycols0 <- palette()[1:ncolor]
 	mycols0[1] <- "grey"
     d$color <- with(d, mycols0[CHR%%ncolor + 1])
+	
+	if(length(sortedCHR) == 1){
+		d$color <- oneColor
+	}
 	
 	if(is.null(maxy)){
 		maxy <- max(d$logp)
