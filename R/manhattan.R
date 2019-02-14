@@ -36,8 +36,8 @@ manhattan <- function(dataframe, maxy=NULL, oneColor = "red", suggestiveline=0, 
     lastbase=0
 	
 	sortedCHR <- sort(unique(d$CHR))
+	numchroms=length(sortedCHR)
 	
-    numchroms=length(unique(d$CHR))
     for (i in sortedCHR) {
       if (i==sortedCHR[1]) {
         d[d$CHR==i, ]$pos=d[d$CHR==i, ]$BP
@@ -51,12 +51,13 @@ manhattan <- function(dataframe, maxy=NULL, oneColor = "red", suggestiveline=0, 
  
  	ncolor <- 6
 	mycols0 <- palette()[1:ncolor]
-	mycols0[1] <- "grey"
+	if(numchroms == 1){
+		mycols0[1] <- oneColor
+	} else {
+		mycols0[1] <- "grey"		
+	}
     d$color <- with(d, mycols0[CHR%%ncolor + 1])
 	
-	if(length(sortedCHR) == 1){
-		d$color <- oneColor
-	}
 	
 	if(is.null(maxy)){
 		maxy <- max(d$logp)
