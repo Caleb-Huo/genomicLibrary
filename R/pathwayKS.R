@@ -22,9 +22,11 @@ pathwayKS <- function(wholePvalues,wholeName,fdr=1.1,database=NULL,pathSizeMin=1
   if(is.null(database)){
     return ("Please specify database")
   }
-  
-  whole <- toupper(wholeName)
-  database <- lapply(database,function(x) toupper(x))
+	
+	if(F){
+	  whole <- toupper(wholeName)
+	  database <- lapply(database,function(x) toupper(x))		
+	}
 
   ######################Update the gene sets by dropping genes that do not appear in whole
   gene.overlap2=lapply(database,function(x) intersect(x,whole))
